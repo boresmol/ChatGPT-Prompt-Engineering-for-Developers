@@ -13,6 +13,26 @@ Existen dos tipos de 'Large Language Models' (LLMs):
 Este curso se centra en los *Instruction Tuned LLM*
 
 ### **2.Guidelines for Prompting**
+
+Para este apartado se usa la librería `openai`de `Python`. 
+
+```python3
+import openai
+openai.api_key = "CLAVE DE LA API DE OPENAI"
+```
+
+Después, creamos una función la cual recibirá el promp y el tipo de modelo a usar y devolverá la respuesta al prompt. En este caso usaremos el modelo `gpt-3.5-turbo`.
+```python3
+def get_completion(prompt, model="gpt-3.5-turbo"):
+    messages = [{"role": "user", "content": prompt}]
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages,
+        temperature=0, # Grados de aleatoriedad del modelo
+    )
+    return response.choices[0].message["content"]
+```
+
 Principios del prompting:
 * Principio 1:Escribe instrucciones claras y específicas. Algunas tácticas son:
     * El **uso de delimitadores** como: triple """, triple ```, triple ---, <> o XML tags.
@@ -74,25 +94,17 @@ Principios del prompting:
                   Total cost: 100x + 250x + 100,000 + 100x = 450x + 100,000
                   """ ```
 
-          
-  
-Para este apartado se usa la librería `openai`de `Python`. 
+
+Los LLMs tienen ciertas limitaciones. Una de las limitaciones principales son las **Alucionaciones**. Esto quiere decir que el modelo puede dar respuestas que suenan plausibles pero realmente no son ciertas. Esto podría pasar por ejemplo pidiéndole la descripción de un artículo inventado:
 
 ```python3
-import openai
-openai.api_key = "CLAVE DE LA API DE OPENAI"
+prompt = f"""
+Tell me about AeroGlide UltraSlim Smart Toothbrush by Boie
+"""
+response = get_completion(prompt)
+print(response)
 ```
 
-Después, creamos una función la cual recibirá el promp y el tipo de modelo a usar y devolverá la respuesta al prompt. En este caso usaremos el modelo `gpt-3.5-turbo`.
-```python3
-def get_completion(prompt, model="gpt-3.5-turbo"):
-    messages = [{"role": "user", "content": prompt}]
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=messages,
-        temperature=0, # Grados de aleatoriedad del modelo
-    )
-    return response.choices[0].message["content"]
-```
+
 
 
