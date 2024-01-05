@@ -342,7 +342,7 @@ A lo que el modelo nos devolverá el HTML:
 Product IDs: SWC-100, SWC-110
 ```
 
-### **4. Summarizing**
+### **4.Summarizing**
 Esta sección se centra en como resumir texto con una atención especial en ciertos tópicos.
 
 El texto a resumir será la review de un producto:
@@ -522,7 +522,7 @@ Lo que dará por respuesta:
 3 The reviewer found the price increase after the sale disappointing and noticed a decrease in quality.
 ```
 
-###** 5.Inferring**
+### **5.Inferring**
 En este capítulo se muestra como inferir sentimientos o tópicos de reviews de productos y de artículos.
 
 **Inferencia de Sentimientos**
@@ -665,7 +665,7 @@ A lo que el modelo identificará:
 4. Social Security Administration
 5. Job satisfaction improvement`
 
-###**6. Expanding**
+### **6.Expanding**
 En esta lección, se aprende a generar correos electrónicos de servicio al cliente que se adaptan a la opinión de cada cliente.
 El fin es automatizar la respuesta a corres de atención al cliente. Lo primero, sería extraer el sentimiento del mensaje mediante la herramienta de *inferring* explicada en la lección anterior. Una vez extraído el sentimiento y dado el mensaje original del cliente:
 
@@ -745,7 +745,7 @@ Best regards,
 AI customer agent
 ```
 
-###**7.Chatbot**
+### **7.Chatbot**
 Como último capítulo del curso, se enseña como crear un chatbot especializado en una tarea específica. 
 
 En primer lugar creamos dos funciones:
