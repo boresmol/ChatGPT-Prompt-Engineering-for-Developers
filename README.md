@@ -522,6 +522,322 @@ Lo que dará por respuesta:
 3 The reviewer found the price increase after the sale disappointing and noticed a decrease in quality.
 ```
 
+### ** 5.Inferring**
+En este capítulo se muestra como inferir sentimientos o tópicos de reviews de productos y de artículos.
 
-      
+**Inferencia de Sentimientos**
+Se proporciona la review de un producto (en el ejemplo, una lámpara) y se quiere saber si esta review es positiva o negativa. Para ello, haremos lo siguiente:
+
+```python3
+lamp_review = """
+Needed a nice lamp for my bedroom, and this one had \
+additional storage and not too high of a price point. \
+Got it fast.  The string to our lamp broke during the \
+transit and the company happily sent over a new one. \
+Came within a few days as well. It was easy to put \
+together.  I had a missing part, so I contacted their \
+support and they very quickly got me the missing piece! \
+Lumina seems to me to be a great company that cares \
+about their customers and products!!
+"""
+
+prompt = f"""
+What is the sentiment of the following product review, 
+which is delimited with triple backticks?
+
+Review text: '''{lamp_review}'''
+"""
+response = get_completion(prompt)
+print(response)
+
+```
+Las respuestas a este prompt es la siguiente:
+`The sentiment of the product review is positive.`
+
+También podemos identificar tipos de emociones:
+
+```python3
+prompt = f"""
+Identify a list of emotions that the writer of the \
+following review is expressing. Include no more than \
+five items in the list. Format your answer as a list of \
+lower-case words separated by commas.
+
+Review text: '''{lamp_review}'''
+"""
+response = get_completion(prompt)
+print(response)
+```
+A lo que el modelo responderá:
+`satisfied, pleased, grateful, impressed, happy`
+
+O incluso identificar un sentimiento concreto:
+
+```python3
+prompt = f"""
+Is the writer of the following review expressing anger?\
+The review is delimited with triple backticks. \
+Give your answer as either yes or no.
+
+Review text: '''{lamp_review}'''
+"""
+response = get_completion(prompt)
+print(response)
+```
+A lo que el modelo responderá:
+`No`
+
+Otro uso importante podría ser la extracción de productos o nombres de compañía dada una review:
+```python3
+prompt = f"""
+Identify the following items from the review text: 
+- Item purchased by reviewer
+- Company that made the item
+
+The review is delimited with triple backticks. \
+Format your response as a JSON object with \
+"Item" and "Brand" as the keys. 
+If the information isn't present, use "unknown" \
+as the value.
+Make your response as short as possible.
+  
+Review text: '''{lamp_review}'''
+"""
+response = get_completion(prompt)
+print(response)
+```
+La respuesta en este caso es:
+`{
+  "Item": "lamp",
+  "Brand": "Lumina"
+}`
+
+También es posible inferir temas dado un texto. Por ejemplo, dado el siguiente texto de ejemplo:
+```python3
+story = """
+In a recent survey conducted by the government, 
+public sector employees were asked to rate their level 
+of satisfaction with the department they work at. 
+The results revealed that NASA was the most popular 
+department with a satisfaction rating of 95%.
+
+One NASA employee, John Smith, commented on the findings, 
+stating, "I'm not surprised that NASA came out on top. 
+It's a great place to work with amazing people and 
+incredible opportunities. I'm proud to be a part of 
+such an innovative organization."
+
+The results were also welcomed by NASA's management team, 
+with Director Tom Johnson stating, "We are thrilled to 
+hear that our employees are satisfied with their work at NASA. 
+We have a talented and dedicated team who work tirelessly 
+to achieve our goals, and it's fantastic to see that their 
+hard work is paying off."
+
+The survey also revealed that the 
+Social Security Administration had the lowest satisfaction 
+rating, with only 45% of employees indicating they were 
+satisfied with their job. The government has pledged to 
+address the concerns raised by employees in the survey and 
+work towards improving job satisfaction across all departments.
+"""
+```
+Podemos utilizar el siguiente prompt para extraer 5 tópicos del texto:
+
+```python3
+prompt = f"""
+Determine five topics that are being discussed in the \
+following text, which is delimited by triple backticks.
+
+Make each item one or two words long. 
+
+Format your response as a list of items separated by commas.
+
+Text sample: '''{story}'''
+"""
+response = get_completion(prompt)
+print(response)
+```
+A lo que el modelo identificará:
+`1. Government survey
+2. Department satisfaction rating
+3. NASA
+4. Social Security Administration
+5. Job satisfaction improvement`
+
+### **6. Expanding**
+En esta lección, se aprende a generar correos electrónicos de servicio al cliente que se adaptan a la opinión de cada cliente.
+El fin es automatizar la respuesta a corres de atención al cliente. Lo primero, sería extraer el sentimiento del mensaje mediante la herramienta de *inferring* explicada en la lección anterior. Una vez extraído el sentimiento y dado el mensaje original del cliente:
+
+```python3
+sentiment = "negative"
+
+
+review = f"""
+So, they still had the 17 piece system on seasonal \
+sale for around $49 in the month of November, about \
+half off, but for some reason (call it price gouging) \
+around the second week of December the prices all went \
+up to about anywhere from between $70-$89 for the same \
+system. And the 11 piece system went up around $10 or \
+so in price also from the earlier sale price of $29. \
+So it looks okay, but if you look at the base, the part \
+where the blade locks into place doesn’t look as good \
+as in previous editions from a few years ago, but I \
+plan to be very gentle with it (example, I crush \
+very hard items like beans, ice, rice, etc. in the \ 
+blender first then pulverize them in the serving size \
+I want in the blender then switch to the whipping \
+blade for a finer flour, and use the cross cutting blade \
+first when making smoothies, then use the flat blade \
+if I need them finer/less pulpy). Special tip when making \
+smoothies, finely cut and freeze the fruits and \
+vegetables (if using spinach-lightly stew soften the \ 
+spinach then freeze until ready for use-and if making \
+sorbet, use a small to medium sized food processor) \ 
+that you plan to use that way you can avoid adding so \
+much ice if at all-when making your smoothie. \
+After about a year, the motor was making a funny noise. \
+I called customer service but the warranty expired \
+already, so I had to buy another one. FYI: The overall \
+quality has gone done in these types of products, so \
+they are kind of counting on brand recognition and \
+consumer loyalty to maintain sales. Got it in about \
+two days.
+"""
+```
+Podemos utilizar el siguiente prompt para automatizar la respuesta teniendo en cuenta la review y el sentimiento de la review:
+```python3
+prompt = f"""
+You are a customer service AI assistant.
+Your task is to send an email reply to a valued customer.
+Given the customer email delimited by ```, \
+Generate a reply to thank the customer for their review.
+If the sentiment is positive or neutral, thank them for \
+their review.
+If the sentiment is negative, apologize and suggest that \
+they can reach out to customer service. 
+Make sure to use specific details from the review.
+Write in a concise and professional tone.
+Sign the email as `AI customer agent`.
+Customer review: ```{review}```
+Review sentiment: {sentiment}
+"""
+response = get_completion(prompt)
+print(response)
+```
+A lo que el modelo responderña:
+```python3
+Dear Valued Customer,
+
+Thank you for taking the time to share your review with us. We appreciate your feedback and apologize for any inconvenience you may have experienced.
+
+We are sorry to hear about the price increase you noticed in December. We strive to provide competitive pricing for our products, and we understand your frustration. If you have any further concerns regarding pricing or any other issues, we encourage you to reach out to our customer service team. They will be more than happy to assist you.
+
+We also appreciate your feedback regarding the base of the system. We continuously work to improve the quality of our products, and your comments will be taken into consideration for future enhancements.
+
+We apologize for any inconvenience caused by the motor issue you encountered. Our customer service team is always available to assist with any warranty-related concerns. We understand that the warranty had expired, but we would still like to address this matter further. Please feel free to contact our customer service team, and they will do their best to assist you.
+
+Thank you once again for your review. We value your feedback and appreciate your loyalty to our brand. If you have any further questions or concerns, please do not hesitate to contact us.
+
+Best regards,
+
+AI customer agent
+```
+
+### **7.Chatbot**
+Como último capítulo del curso, se enseña como crear un chatbot especializado en una tarea específica. 
+
+En primer lugar creamos dos funciones:
+
+1. `get_completion`: Esta función toma un único prompt como entrada y devuelve la completación generada por el modelo GPT-3.5-turbo. El prompt se proporciona como un mensaje de usuario. El código crea un objeto de mensaje con el rol "user" y el contenido del prompt, luego utiliza la función `openai.ChatCompletion`.create para obtener la respuesta del modelo. La completación generada se extrae de la respuesta y se devuelve.
+
+2. `get_completion_from_messages`: Esta función toma una lista de mensajes como entrada en lugar de un solo prompt. Cada mensaje en la lista debe tener un rol ("user" o "assistant") y un contenido que representa el texto del mensaje. La función luego utiliza la función openai.ChatCompletion.create para obtener la respuesta del modelo. Al igual que en la primera función, la completación generada se extrae de la respuesta y se devuelve. Además, esta función permite especificar la temperatura como un parámetro, que controla la aleatoriedad de las respuestas generadas por el modelo.
+
+```python3
+
+def get_completion(prompt, model="gpt-3.5-turbo"):
+    messages = [{"role": "user", "content": prompt}]
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages,
+        temperature=0, # this is the degree of randomness of the model's output
+    )
+    return response.choices[0].message["content"]
+
+def get_completion_from_messages(messages, model="gpt-3.5-turbo", temperature=0):
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages,
+        temperature=temperature, # this is the degree of randomness of the model's output
+    )
+#     print(str(response.choices[0].message))
+    return response.choices[0].message["content"]
+```
+Después creamos una función que reciba prompts desde el user, y que complete las frases con el rol de asistente. En este caso, el contexto que daremos al sistema es que es un bot para recibir pedidos de pizza.
+
+```python3
+
+def collect_messages(_):
+    prompt = inp.value_input
+    inp.value = ''
+    context.append({'role':'user', 'content':f"{prompt}"})
+    response = get_completion_from_messages(context) 
+    context.append({'role':'assistant', 'content':f"{response}"})
+    panels.append(
+        pn.Row('User:', pn.pane.Markdown(prompt, width=600)))
+    panels.append(
+        pn.Row('Assistant:', pn.pane.Markdown(response, width=600, style={'background-color': '#F6F6F6'})))
+ 
+    return pn.Column(*panels)
+
+import panel as pn  # GUI
+pn.extension()
+
+panels = [] # collect display 
+
+context = [ {'role':'system', 'content':"""
+You are OrderBot, an automated service to collect orders for a pizza restaurant. \
+You first greet the customer, then collects the order, \
+and then asks if it's a pickup or delivery. \
+You wait to collect the entire order, then summarize it and check for a final \
+time if the customer wants to add anything else. \
+If it's a delivery, you ask for an address. \
+Finally you collect the payment.\
+Make sure to clarify all options, extras and sizes to uniquely \
+identify the item from the menu.\
+You respond in a short, very conversational friendly style. \
+The menu includes \
+pepperoni pizza  12.95, 10.00, 7.00 \
+cheese pizza   10.95, 9.25, 6.50 \
+eggplant pizza   11.95, 9.75, 6.75 \
+fries 4.50, 3.50 \
+greek salad 7.25 \
+Toppings: \
+extra cheese 2.00, \
+mushrooms 1.50 \
+sausage 3.00 \
+canadian bacon 3.50 \
+AI sauce 1.50 \
+peppers 1.00 \
+Drinks: \
+coke 3.00, 2.00, 1.00 \
+sprite 3.00, 2.00, 1.00 \
+bottled water 5.00 \
+"""} ]  # accumulate messages
+
+
+inp = pn.widgets.TextInput(value="Hi", placeholder='Enter text here…')
+button_conversation = pn.widgets.Button(name="Chat!")
+
+interactive_conversation = pn.bind(collect_messages, button_conversation)
+
+dashboard = pn.Column(
+    inp,
+    pn.Row(button_conversation),
+    pn.panel(interactive_conversation, loading_indicator=True, height=300),
+)
+
+dashboard
+``` 
 
