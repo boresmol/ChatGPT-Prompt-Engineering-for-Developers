@@ -51,7 +51,7 @@ Principios del prompting:
             ```{text}```
             """ ```
     * **Indique al modelo que encuentre su propia solución antes de apresurarse a llegar a una conclusión.**:
-       *Ejemplo: ```python3
+       * Ejemplo: ```python3
                   prompt = f"""
                   Determine if the student's solution is correct or not.
                   
