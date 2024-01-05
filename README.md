@@ -36,21 +36,20 @@ Principios del prompting:
 * Principio 2: Dale al modelo tiempo para pensar. Cuando el promopt es muy complejo, puedes instruir al modelo para que piense durante más tiempo acerca de                 la respuesta.
     * **Especificar los pasos en los que completar la tarea**:
         * ```python3
-          prompt_1 = f"""
-         Perform the following actions: 
-         1 - Summarize the following text delimited by triple \
-         backticks with 1 sentence.
-         2 - Translate the summary into French.
-         3 - List each name in the French summary.
-         4 - Output a json object that contains the following \
-         keys: french_summary, num_names.
-         
-         Separate your answers with line breaks.
-         
-         Text:
-         ```{text}```
-         """
-         ```
+             prompt_1 = f"""
+            Perform the following actions: 
+            1 - Summarize the following text delimited by triple \
+            backticks with 1 sentence.
+            2 - Translate the summary into French.
+            3 - List each name in the French summary.
+            4 - Output a json object that contains the following \
+            keys: french_summary, num_names.
+            
+            Separate your answers with line breaks.
+            
+            Text:
+            ```{text}```
+            """ ```
   
 Para este apartado se usa la librería `openai`de `Python`. 
 
