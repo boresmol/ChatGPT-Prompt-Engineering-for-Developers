@@ -15,10 +15,10 @@ Este curso se centra en los *Instruction Tuned LLM*
 ### **2.Guidelines for Prompting**
 Principios del prompting:
 * Principio 1:Escribe instrucciones claras y específicas. Algunas tácticas son:
-    * El uso de delimitadores como: triple """, triple ```, triple ---, <> o XML tags.
+    * El **uso de delimitadores** como: triple """, triple ```, triple ---, <> o XML tags.
         * Ejemplo: `prompt = f""" Summarize the text delimited by triple backticks \ into a single sentence. ```{text}``` """`
-    * Preguntar por outputs estructurados: Por ejemplo, pedirle al modelo que lo estructure en un json o HTML.
-    * Preguntar al modelo que chequee si se cumplen unas condiciones o comprobar los supuestos necesarios para realizar la tarea.
+    * Preguntar por **outputs estructurados**: Por ejemplo, pedirle al modelo que lo estructure en un json o HTML.
+    * Preguntar al modelo que chequee si **se cumplen unas condiciones** o comprobar los **supuestos necesarios para realizar la tarea**.
         * Ejemplo: ```python3
                     prompt = f"""
                     You will be provided with text delimited by triple quotes. 
@@ -32,8 +32,26 @@ Principios del prompting:
                     \"\"\"{text_1}\"\"\"
                     """
                     ```
-* Principio 2:
-    * Dale al modelo tiempo para pensar
+    * **Few-shot prompting**: Se le dan ejemplos exitosos de ejecuciones de la tarea que desea realizar antes de pedirle al modelo que realice la tarea real                               que desea que realice. 
+* Principio 2: Dale al modelo tiempo para pensar. Cuando el promopt es muy complejo, puedes instruir al modelo para que piense durante más tiempo acerca de                 la respuesta.
+    * **Especificar los pasos en los que completar la tarea**:
+        * ```python3
+          prompt_1 = f"""
+         Perform the following actions: 
+         1 - Summarize the following text delimited by triple \
+         backticks with 1 sentence.
+         2 - Translate the summary into French.
+         3 - List each name in the French summary.
+         4 - Output a json object that contains the following \
+         keys: french_summary, num_names.
+         
+         Separate your answers with line breaks.
+         
+         Text:
+         ```{text}```
+         """
+         ```
+  
 Para este apartado se usa la librería `openai`de `Python`. 
 
 ```python3
