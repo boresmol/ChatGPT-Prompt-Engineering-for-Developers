@@ -110,8 +110,9 @@ En esta sección se enseña como analizar y refinar iterativamente los prompts p
 El ciclo iterativo sería el siguiente:
 * Realizar un prompt claro y específico
 * Analizar por que el resultado no da el output deseado
-* Refinar la idea y el prompt
-* Repetir
+* Refinar la idea y el prompt: clarifica las intrucciones, da más tiempo al modelo para pensar
+* Refina el promp con varios ejemplos
+* Repite
 
 Vamos a realizar el ejercicio:
 
@@ -340,4 +341,62 @@ A lo que el modelo nos devolverá el HTML:
 
 Product IDs: SWC-100, SWC-110
 ```
+
+### **4. Summarizing**
+Esta sección se centra en como resumir texto con una atención especial en ciertos tópicos.
+
+El texto a resumir será la review de un producto:
+
+```python3
+prod_review = """
+Got this panda plush toy for my daughter's birthday, \
+who loves it and takes it everywhere. It's soft and \ 
+super cute, and its face has a friendly look. It's \ 
+a bit small for what I paid though. I think there \ 
+might be other options that are bigger for the \ 
+same price. It arrived a day earlier than expected, \ 
+so I got to play with it myself before I gave it \ 
+to her.
+"""
+```
+Existen varias estrategias para realizar los resúmenes:
+
+1. Resumen con un límite de palabras, carácteres o palabras. Un ejemplo de prompt para realizar esto sería:
+    * ```python3
+      prompt = f"""
+      Your task is to generate a short summary of a product \
+      review from an ecommerce site. 
+      
+      Summarize the review below, delimited by triple 
+      backticks, in at most 30 words. 
+      
+      Review: ```{prod_review}```
+      """
+      
+      response = get_completion(prompt)
+      print(response)
+      ```
+      Que dará la siguiente respuesta:
+      `This panda plush toy is loved by the reviewer's daughter, but they feel it is a bit small for the price.`
+2. Resumir centrándose en un tema específico. En este ejemplo, será *shipping* y *delivery*:
+    * ```python3
+      prompt = f"""
+      Your task is to generate a short summary of a product \
+      review from an ecommerce site to give feedback to the \
+      Shipping deparmtment. 
+      
+      Summarize the review below, delimited by triple 
+      backticks, in at most 30 words, and focusing on any aspects \
+      that mention shipping and delivery of the product. 
+      
+      Review: ```{prod_review}```
+      """
+      
+      response = get_completion(prompt)
+      print(response)
+      ```
+      Que dará la siguiente respuesta:
+
+      `The customer is happy with the product but suggests offering larger options for the same price. They were pleasantly surprised by the early d               elivery.`
+
 
