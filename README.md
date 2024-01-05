@@ -51,10 +51,10 @@ Principios del prompting:
             ```{text}```
             """ ```
     * **Indique al modelo que encuentre su propia solución antes de apresurarse a llegar a una conclusión.**:
-       * Ejemplo: ```python3
+       * Ejemplo:
+               ```python3
                   prompt = f"""
                   Determine if the student's solution is correct or not.
-                  
                   Question:
                   I'm building a solar power installation and I need \
                    help working out the financials. 
@@ -65,7 +65,6 @@ Principios del prompting:
                   foot
                   What is the total cost for the first year of operations 
                   as a function of the number of square feet.
-                  
                   Student's Solution:
                   Let x be the size of the installation in square feet.
                   Costs:
@@ -73,7 +72,8 @@ Principios del prompting:
                   2. Solar panel cost: 250x
                   3. Maintenance cost: 100,000 + 100x
                   Total cost: 100x + 250x + 100,000 + 100x = 450x + 100,000
-                  """```
+                  """
+            ```
 
           
   
