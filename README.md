@@ -288,7 +288,7 @@ response = get_completion(prompt)
 print(response)
 ```
 A lo que el modelo nos devolverá el HTML:
-
+```html
 <div>
   <h2>Product Description</h2>
   <p>
@@ -339,5 +339,5 @@ A lo que el modelo nos devolverá el HTML:
 </div>
 
 Product IDs: SWC-100, SWC-110
-
+```
 
