@@ -72,8 +72,7 @@ Principios del prompting:
                   2. Solar panel cost: 250x
                   3. Maintenance cost: 100,000 + 100x
                   Total cost: 100x + 250x + 100,000 + 100x = 450x + 100,000
-                  """
-            ```
+                  """ ```
 
           
   
