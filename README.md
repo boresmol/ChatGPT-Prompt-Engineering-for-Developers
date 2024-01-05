@@ -177,7 +177,8 @@ Technical specifications: ```{fact_sheet_chair}```
 response = get_completion(prompt)
 print(response)
 ```
-`Introducing our stunning mid-century inspired office chair, the perfect addition to any home or business setting. This chair is part of a beautiful family of office furniture, including filing cabinets, desks, bookcases, meeting tables, and more, all designed with a timeless mid-century aesthetic.
+```python3
+Introducing our stunning mid-century inspired office chair, the perfect addition to any home or business setting. This chair is part of a beautiful family of office furniture, including filing cabinets, desks, bookcases, meeting tables, and more, all designed with a timeless mid-century aesthetic.
 
 One of the standout features of this chair is the variety of customization options available. You can choose from several shell colors and base finishes to perfectly match your existing decor. The chair is available with either plastic back and front upholstery or full upholstery in a range of 10 fabric and 6 leather options, allowing you to create a look that is uniquely yours.
 
@@ -193,7 +194,150 @@ When it comes to materials, this chair is crafted with the utmost attention to q
 
 Finally, this chair is proudly made in Italy, known for its exceptional craftsmanship and attention to detail. With its timeless design and superior construction, this chair is not only a stylish addition to any space but also a reliable and functional piece of furniture.
 
-Upgrade your office or home with our mid-century inspired office chair and experience the perfect blend of style, comfort, and functionality.`
-**Problema 1**
+Upgrade your office or home with our mid-century inspired office chair and experience the perfect blend of style, comfort, and functionality.
+```
+
+**Problema 1: El texto de respuesta es demasiado largo**
+Podemos limitar el número de palabras que queremos que el modelo genere:
+
+```python3
+prompt = f"""
+Your task is to help a marketing team create a 
+description for a retail website of a product based 
+on a technical fact sheet.
+
+Write a product description based on the information 
+provided in the technical specifications delimited by 
+triple backticks.
+
+Use at most 50 words.
+
+Technical specifications: ```{fact_sheet_chair}```
+"""
+response = get_completion(prompt)
+print(response)
+```
+La nueva respuesta es la siguiente:
+```python3
+Introducing our mid-century inspired office chair, part of a stunning furniture collection. With various color and finish options, choose between plastic or full upholstery in fabric or leather. The chair features a durable aluminum base with 5 wheels and pneumatic height adjustment. Perfect for home or business use. Made in Italy.
+```
+
+**Problema 2: El texto se centra en los detalles incorrectos**
+Una solución podría ser decirle al modelo que se centre en los detalles relevantes para la audiencia
+
+```python3
+prompt = f"""
+Your task is to help a marketing team create a 
+description for a retail website of a product based 
+on a technical fact sheet.
+
+Write a product description based on the information 
+provided in the technical specifications delimited by 
+triple backticks.
+
+The description is intended for furniture retailers, 
+so should be technical in nature and focus on the 
+materials the product is constructed from.
+
+Use at most 50 words.
+
+Technical specifications: ```{fact_sheet_chair}```
+"""
+response = get_completion(prompt)
+print(response)
+```
+A lo que la nueva respuesta será:
+```python3
+Introducing our mid-century inspired office chair, perfect for both home and business settings. This chair is part of a beautiful family of furniture, offering a range of options including filing cabinets, desks, bookcases, and meeting tables. The chair is available with plastic or full upholstery in a variety of fabric and leather options. Choose from stainless steel, matte black, gloss white, or chrome base finishes. With its 5-wheel plastic coated aluminum base and pneumatic chair adjust, this chair offers easy raise/lower action. It also comes with the option of soft or hard-floor casters and two choices of seat foam densities. The chair is constructed with a cast aluminum shell with a modified nylon coating and a 10mm shell thickness. The seat is made with HD36 foam for maximum comfort. Made in Italy, this chair is qualified for contract use. Product ID: SWC-100, SWC-110.
+```
+
+**Problema 3: La descripción necesita una tabla**
+Podemos pedirle al modelo que extraiga información y la organice en una tabla:
+
+```python3
+prompt = f"""
+Your task is to help a marketing team create a 
+description for a retail website of a product based 
+on a technical fact sheet.
+
+Write a product description based on the information 
+provided in the technical specifications delimited by 
+triple backticks.
+
+The description is intended for furniture retailers, 
+so should be technical in nature and focus on the 
+materials the product is constructed from.
+
+At the end of the description, include every 7-character 
+Product ID in the technical specification.
+
+After the description, include a table that gives the 
+product's dimensions. The table should have two columns.
+In the first column include the name of the dimension. 
+In the second column include the measurements in inches only.
+
+Give the table the title 'Product Dimensions'.
+
+Format everything as HTML that can be used in a website. 
+Place the description in a <div> element.
+
+Technical specifications: ```{fact_sheet_chair}```
+"""
+
+response = get_completion(prompt)
+print(response)
+```
+A lo que el modelo nos devolverá el HTML:
+
+<div>
+  <h2>Product Description</h2>
+  <p>
+    Introducing our latest addition to our mid-century inspired office furniture collection - the SWC Chair. This chair is part of a beautiful family of furniture that includes filing cabinets, desks, bookcases, meeting tables, and more. With its sleek design and customizable options, the SWC Chair is the perfect choice for any home or business setting.
+  </p>
+  <p>
+    The SWC Chair is available in several options of shell color and base finishes, allowing you to create a look that matches your style. You can choose between plastic back and front upholstery or full upholstery in a variety of fabric and leather options. The base finish options include stainless steel, matte black, gloss white, or chrome. Additionally, you have the choice of having the chair with or without armrests.
+  </p>
+  <p>
+    Constructed with durability in mind, the SWC Chair features a 5-wheel plastic coated aluminum base, ensuring stability and easy mobility. The chair also has a pneumatic adjuster, allowing for easy raise and lower action to find the perfect height for your comfort.
+  </p>
+  <p>
+    The SWC Chair is not only stylish and functional, but it is also designed with your comfort in mind. The seat is made with HD36 foam, providing a comfortable and supportive seating experience. You also have the option to choose between soft or hard-floor caster options, depending on your flooring needs. Additionally, you can select between two choices of seat foam densities - medium (1.8 lb/ft3) or high (2.8 lb/ft3). The chair is also available with armless design or 8 position PU armrests for added convenience.
+  </p>
+  <p>
+    Made with high-quality materials, the SWC Chair is built to last. The shell, base, and glider are constructed with cast aluminum with a modified nylon PA6/PA66 coating, ensuring durability and longevity. The shell has a thickness of 10 mm, providing stability and support. The chair is proudly made in Italy, known for its craftsmanship and attention to detail.
+  </p>
+  <p>
+    The SWC Chair is not only a stylish addition to any space, but it is also a practical choice for both home and business settings. With its customizable options, durable construction, and comfortable design, the SWC Chair is the perfect seating solution for any environment.
+  </p>
+  <h2>Product Dimensions</h2>
+  <table>
+    <tr>
+      <th>Dimension</th>
+      <th>Measurement (inches)</th>
+    </tr>
+    <tr>
+      <td>Width</td>
+      <td>20.87"</td>
+    </tr>
+    <tr>
+      <td>Depth</td>
+      <td>20.08"</td>
+    </tr>
+    <tr>
+      <td>Height</td>
+      <td>31.50"</td>
+    </tr>
+    <tr>
+      <td>Seat Height</td>
+      <td>17.32"</td>
+    </tr>
+    <tr>
+      <td>Seat Depth</td>
+      <td>16.14"</td>
+    </tr>
+  </table>
+</div>
+
+Product IDs: SWC-100, SWC-110
 
 
